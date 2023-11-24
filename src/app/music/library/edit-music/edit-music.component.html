@@ -1,0 +1,13 @@
+@if (music$ | async; as music) {
+  Name: <input type="text" [(ngModel)]="name">
+  <br>
+  Description: <input type="text" [(ngModel)]="description">
+
+
+  <app-artist-manager [(currentArtists)]="currentArtists"
+                      (addArtistsChange)="addArtists=$event"
+                      (removeArtistsChange)="removeArtists=$event"></app-artist-manager>
+
+  <br>
+  <button (click)="onSubmit()">Submit</button>
+}

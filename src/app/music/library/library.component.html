@@ -1,0 +1,53 @@
+Add: <input type="file" (change)="onMusicSelected($event)" multiple>
+
+@if (exists!) {
+  <ul>
+    @for (exist of exists; track exist.name) {
+      <li>
+        <div>
+          <h3>{{exist.name}}</h3>
+          <ul>
+            @for (music of exist.music; track music.id) {
+              <li>
+                {{music.name}}
+                <button (click)="saveMusic(music)">Add To Library</button>
+              </li>
+            }
+          </ul>
+        </div>
+      </li>
+    }
+  </ul>
+  <button (click)="completeUpload()">Complete Upload</button>
+}
+
+@if (selectedMusicIds.length !== 0) {
+  <button (click)="addTo()">Add to</button>
+  @if (playlists$ | async; as playlists) {
+    Playlists:
+    <select #playlistSelect (change)="addToPlaylist(playlistSelect.value)">
+      <option>-</option>
+      @for (playlist of playlists; track playlist.id) {
+        <option [value]="playlist.id">{{playlist.name}}</option>
+      }
+    </select>
+  }
+  @if (albums) {
+    Albums:
+    <select #albumSelect (change)="addToAlbum(albumSelect.value)">
+    <option>-</option>
+    @for (album of albums; track album.id) {
+      <option [value]="album.id">{{album.title}}</option>
+    }
+    </select>
+  }
+}
+
+@if (musics$ | async; as musics) {
+  <app-music-table [musics]="musics" (selectedMusic)="onCheckboxChange($event)">
+    <ng-template #musicOptionsTemplate let-music>
+      <button (click)="goEdit(music.id)">Edit</button>
+      <button (click)="deleteMusic(music.id)">Delete</button>
+    </ng-template>
+  </app-music-table>
+}

@@ -1,0 +1,23 @@
+<app-about></app-about>
+
+@if (!isCreate) {
+  Username:
+  <input type="text" #username>
+  <br>
+  Password:
+  <input type="password" #password>
+  <br>
+  <button (click)="login(username.value, password.value)">Login</button>
+  <br>
+  I don't have an account? <button (click)="isCreate = true">Create</button>
+} @else {
+  Username:
+  <input type="text" #username>
+  <br>
+  Password:
+  <input type="password" #password>
+  <br>
+  <button (click)="create(username.value, password.value)">Create</button>
+  <br>
+  I already have an account? <button (click)="isCreate = false">Login</button>
+}

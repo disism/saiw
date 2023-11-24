@@ -1,0 +1,32 @@
+<h1>Playlists</h1>
+
+Name:
+<input type="text" [(ngModel)]="name" required>
+Private:
+<select [(ngModel)]="isPrivate">
+  <option value="false">False</option>
+  <option value="true">True</option>
+</select>
+<button (click)="createPlaylist()">Create</button>
+
+<hr>
+@if (playlists$) {
+  <ul>
+    @for (playlist of playlists$ | async; track playlist.id) {
+      <li>
+        <a [routerLink]="['/music/playlist', playlist.id]">
+          <h2>{{playlist.name}}</h2>
+        </a>
+        <p>{{playlist.description}}</p>
+        @if (playlist.image) {
+          <img
+            [ngSrc]="getImageAddress(playlist.image.file.hash, playlist.image.file.name)"
+            [width]="150"
+            [height]="150"
+            priority="true"
+            alt="">
+        }
+      </li>
+    }
+  </ul>
+}

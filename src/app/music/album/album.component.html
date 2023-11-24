@@ -1,0 +1,39 @@
+@if (album) {
+  <div>
+    <h1>{{album.title}}</h1>
+    <div>{{album.date | date:'yyyy-MM-dd' }}</div>
+    <p>{{album.description}}</p>
+    <div>
+      @if (album.image) {
+        <img
+          [ngSrc]="getImageAddress(album.image.file.hash)"
+          [width]="150"
+          [height]="150"
+          priority="true"
+          alt="">
+      }
+    </div>
+    <div>
+      @if (album.artists) {
+        @for (artist of album.artists; track artist.id) {
+          <span>{{artist.name}}, </span>
+        }
+      }
+    </div>
+    <div>
+      <button (click)="goEdit()">Edit</button>
+      @if (selectedMusicIds.length !== 0) {
+        <div>
+          <button (click)="removeFormAlbum()">Remove form album</button>
+        </div>
+      }
+    </div>
+    <div>
+      @if (album.musics; as musics) {
+        <app-music-table [musics]="musics" (selectedMusic)="onCheckboxChange($event)">
+          <ng-template #musicOptionsTemplate let-music></ng-template>
+        </app-music-table>
+      }
+    </div>
+  </div>
+}

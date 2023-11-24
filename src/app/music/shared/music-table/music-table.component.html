@@ -1,0 +1,41 @@
+@if (musics) {
+  <ng-container>
+    <table>
+      <thead>
+      <tr>
+        <th>Select</th>
+        <th>Name</th>
+        <th>Artist</th>
+        <th>Description</th>
+        <th>Options</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (music of musics; track music.id) {
+          <tr>
+            <td>
+              <input type="checkbox" (change)="onCheckboxChange($event, music)" />
+            </td>
+            <td>
+              {{music.name}}
+            </td>
+            <td>
+              @if (music.artists) {
+                @for (artist of music.artists; track artist.id) {
+                  <span>{{artist.name}}, </span>
+                }
+              }
+            </td>
+            <td>
+              {{music.description | slice:0:20}}
+            </td>
+            <td>
+              <button (click)="play(music)">Play</button>
+              <ng-container *ngTemplateOutlet="musicOptionsTemplate; context: {$implicit: music}"></ng-container>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </ng-container>
+}

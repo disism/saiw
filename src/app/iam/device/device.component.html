@@ -1,0 +1,13 @@
+<div>
+  <h1>Devices</h1>
+  @if (device$ | async; as deviceObj) {
+    @for (device of deviceObj.devices ; track device.id) {
+      <div>
+        <h2>Device: {{ device.device }}</h2>
+        <p>IP: {{ device.ip }}</p>
+        <button (click)="logout(device)">Logout</button>
+        <hr>
+      </div>
+    }
+  }
+</div>

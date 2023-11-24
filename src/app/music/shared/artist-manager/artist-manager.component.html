@@ -1,0 +1,27 @@
+
+  <br>
+  Artists:
+  @if (currentArtists) {
+    <ul>
+      @for (artist of currentArtists; track artist.id) {
+        <li>
+          {{artist.name}}
+          <button (click)="removeArtist(artist)">Remove</button>
+        </li>
+      }
+    </ul>
+  }
+
+  <br>
+  Search Artist: <input type="text" (keyup.enter)="searchArtists(search.value)" #search>
+  @if (searchArtists$ | async; as artists) {
+    <button (click)="createArtist(search.value)">Artist not found, do you want to create it?</button>
+    <ul>
+      @for (artist of artists; track artist.id) {
+        <li>
+          {{artist.name}}
+          <button (click)="addArtist(artist)">Add</button>
+        </li>
+      }
+    </ul>
+  }

@@ -1,0 +1,39 @@
+<div>
+  Title:
+  <input type="text" [(ngModel)]="title">
+</div>
+<div>
+  Date Year:
+  <input type="date" [(ngModel)]="formattedDate">
+</div>
+<div>
+  Description:
+  <textarea type="text" [(ngModel)]="description"></textarea>
+</div>
+
+<div>
+  @if (image_url) {
+    <img
+      [ngSrc]="image_url"
+      [width]="150"
+      [height]="150"
+      priority="true"
+      alt="">
+  }
+  <br>
+  Image:
+  <input type="file" (change)="changeCover($event)">
+</div>
+
+<div>
+  <app-artist-manager [(currentArtists)]="currentArtists"
+                      (addArtistsChange)="addArtists=$event"
+                      (removeArtistsChange)="removeArtists=$event"></app-artist-manager>
+</div>
+
+<div>
+  <button (click)="deleteAlbum()">Delete</button>
+</div>
+<div>
+  <button (click)="editAlbum()">Submit</button>
+</div>

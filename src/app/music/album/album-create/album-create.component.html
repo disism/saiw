@@ -1,0 +1,23 @@
+
+<div>
+  <div>
+    Name:
+    <input type="text" [(ngModel)]="title" required>
+  </div>
+  <div>
+    Date Year:
+    <input type="date" [(ngModel)]="date">
+  </div>
+  <div>
+    Description:
+    <textarea [(ngModel)]="description"></textarea>
+  </div>
+  <div>
+    <app-artist-manager (addArtistsChange)="artists=$event"></app-artist-manager>
+  </div>
+  <div>
+    Cover:
+    <input type="file" (change)="uploadCover($event)">
+  </div>
+  <button (click)="createAlbum()">Create</button>
+</div>

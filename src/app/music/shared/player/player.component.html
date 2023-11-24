@@ -1,0 +1,8 @@
+<div *ngIf="currentMusic">
+  <p>Now Playing: {{ currentMusic.name }}</p>
+  <button (click)="onPrevious()">Previous</button>
+  <button (click)="onPlayPause()">
+    {{ isPlaying ? 'Pause' : 'Play' }}
+  </button>
+  <button (click)="onNext()">Next</button>
+</div>

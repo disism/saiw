@@ -1,0 +1,87 @@
+@if (playlist) {
+  @if (isEditor) {
+    <div>
+      @if (editCoverUrl) {
+        <img
+          [ngSrc]="editCoverUrl"
+          [width]="150"
+          [height]="150"
+          priority="true"
+          alt="">
+      } @else if (playlist.image) {
+        <img
+          [ngSrc]="getImageAddress(playlist.image.file.hash)"
+          [width]="150"
+          [height]="150"
+          priority="true"
+          alt="">
+        <br>
+        <button (click)="removeCurrentImage()">Remove current image</button>
+      }
+      <br>
+      Edit Cover: <input type="file" (change)="changeCover($event)">
+    </div>
+    <div>
+      <div>
+        <input type="text" [(ngModel)]="playlist.name">
+      </div>
+
+      <div>
+        <textarea type="text" [(ngModel)]="playlist.description"></textarea>
+      </div>
+
+      <div>
+        Private:
+        <select [(ngModel)]="playlist.private">
+          <option value="false">False</option>
+          <option value="true">True</option>
+        </select>
+      </div>
+    </div>
+    <button (click)="editPlaylist()">Submit</button>
+    <button (click)="editCancel()">Cancel</button>
+    <button (click)="deletePlaylist()">Delete</button>
+  } @else {
+    <div>
+      @if(playlist.image) {
+        <img
+          [ngSrc]="getImageAddress(playlist.image.file.hash)"
+          [width]="150"
+          [height]="150"
+          priority="true"
+          alt="">
+      }
+    </div>
+    <div>
+      <h1>{{playlist.name}}</h1>
+      @if(playlist.description) {
+        <p>{{playlist.description}}</p>
+      }
+      <code>{{ playlist.private ? 'Private' : 'Public' }}</code>
+    </div>
+
+    <button (click)="goEdit()">Edit</button>
+  }
+
+  <hr>
+
+  @if (selectedMusicIds.length !== 0) {
+    <button (click)="addTo()">Add to</button>
+    @if (playlists$ | async; as playlists) {
+      Playlists:
+      <select #playlistSelect (change)="addToPlaylist(playlistSelect.value)">
+        @for (playlist of playlists; track playlist.id) {
+          <option>-</option>
+          <option [value]="playlist.id">{{playlist.name}}</option>
+        }
+      </select>
+    }
+    <button (click)="removeFromPlaylist()">Remove from playlist</button>
+  }
+
+  @if (playlist.musics; as musics){
+    <app-music-table [musics]="musics" (selectedMusic)="onCheckboxChange($event)">
+      <ng-template #musicOptionsTemplate let-music></ng-template>
+    </app-music-table>
+  }
+}

@@ -1,0 +1,35 @@
+<h1>Albums</h1>
+
+<a [routerLink]="['/music/album/create']">Create Album ></a>
+
+@if (albums) {
+  @for (album of albums; track album.id) {
+    <div>
+      <h2>
+        <a [routerLink]="['/music/album', album.id]">{{album.title}}</a>
+      </h2>
+      <div>{{album.date | date:'yyyy-MM-dd' }}</div>
+      <div>
+        <p>{{album.description}}</p>
+      </div>
+      <div>
+        @if (album.image) {
+          <img
+            [ngSrc]="getImageAddress(album.image.file.hash)"
+            [width]="150"
+            [height]="150"
+            priority="true"
+            alt="">
+        }
+      </div>
+      <div>
+        @if (album.artists) {
+          @for (artist of album.artists; track artist.id) {
+            <span>{{artist.name}}, </span>
+          }
+        }
+      </div>
+      <hr>
+    </div>
+  }
+}
