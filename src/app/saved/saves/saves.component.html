@@ -1,0 +1,17 @@
+@if (saves$ | async; as saves) {
+  <ul>
+    @for (saved of saves; track saved.id) {
+      <li>
+        <div>
+          {{ saved.name }}
+          <app-download-button [hash]="saved.file.hash"></app-download-button>
+          <button (click)="delete(saved.id)">Delete</button>
+          <app-dir-selector [id]="saved.id" (dirSelected)="addToDir(saved.id, $event)"></app-dir-selector>
+          <pre>{{ saved.caption }} {{saved.file.size | size}}</pre>
+        </div>
+        <hr>
+      </li>
+    }
+  </ul>
+}
+

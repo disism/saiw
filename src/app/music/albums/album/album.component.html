@@ -1,0 +1,110 @@
+@if (isEdit) {
+  <div>
+    <h2>Edit Basic</h2>
+    Title: <input type="text" [(ngModel)]="title">
+    <br>
+    Description: <input type="text" [(ngModel)]="description">
+    <br>
+    Year: <input type="text" [(ngModel)]="year">
+    <br>
+
+    <div>
+      <app-image-upload (imageIdChanged)="onImageIdChanged($event)"></app-image-upload>
+    </div>
+
+    <button (click)="editAlbum()">Submit</button>
+
+
+    <h2>Add or Remove artists.</h2>
+    @if (album!; as album) {
+      <ul>
+        @if (album.artists.length > 0) {
+          @for (artist of album.artists; track artist.id ) {
+            {{artist.name}}
+            <button (click)="removeArtist(artist.id)">Remove</button>
+          }
+        }
+      </ul>
+    }
+
+    <div>
+      Artists:
+      @if (artists.length > 0) {
+        <ul>
+          @for (artist of artists;track artist.id) {
+            <li>
+              {{ artist.name }}
+              <button (click)="removeArtist(artist.id)">Remove</button>
+            </li>
+          }
+        </ul>
+      }
+      <br>
+
+      Search Artist: <input type="text" (keyup.enter)="searchArtists(search.value)" #search>
+      @if (searchArtists$ | async;as artists) {
+        <button (click)="createArtist(search.value)">No search results for Artist. Created?</button>
+        <ul>
+          @for (artist of artists;track artist.id) {
+            <li>
+              {{ artist.name }}
+              <button (click)="addArtist(artist)">Add</button>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+
+  <button (click)="isEdit = false">Cancel</button>
+} @else {
+  @if (album!; as album) {
+    <h2>{{album.title}}</h2>
+    <pre>{{album.year}}</pre>
+    <p>{{album.description}}</p>
+    <img
+      [ngSrc]="getImageAddress(album.image.file.hash, album.image.file.name)"
+      [width]="150"
+      [height]="150"
+      priority="true"
+      alt="">
+
+    <br>
+    <button (click)="isEdit = true">Edit</button>
+    <button (click)="deleteAlbum(album.id)">Delete</button>
+
+    @if (album.musics.length > 0) {
+      <p>Music</p>
+      @if (album.musics; as musics) {
+        <table>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Artist</th>
+            <th>Options</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (music of musics; track music.id) {
+              <tr>
+                <td>
+                  {{music.name}}
+                </td>
+                <td>
+                  @if (music.artists) {
+                    @for (artist of music.artists; track artist.id) {
+                      <span>{{artist.name}}, </span>
+                    }
+                  }
+                </td>
+                <td>
+                  <button (click)="removeMusicFromAlbum(music.id)">Remove</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    }
+  }
+}

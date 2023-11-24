@@ -1,0 +1,44 @@
+@if (music$ | async; as music) {
+
+
+  Title: {{music.name}}
+  <br>
+  <input type="text" [(ngModel)]="title">
+
+  <br>
+
+  Description: {{music.description}}
+  <br>
+  <input type="text" [(ngModel)]="description">
+
+  <br>
+  Artists:
+  @if (music.artists) {
+    <ul>
+      @for (artist of music.artists;  track artist.id) {
+        <li>
+          {{artist.name}}
+          <button (click)="removeArtist(music.id, artist.id)">Remove</button>
+        </li>
+      }
+    </ul>
+  }
+
+  <br>
+  Search Artist: <input type="text" (keyup.enter)="searchArtists(search.value)" #search>
+  @if (artists$ | async; as artists) {
+    <button (click)="createArtist(music.id, search.value)">...No Artist, Create?</button>
+    <ul>
+      @for (artist of artists; track artist.id) {
+        <li>
+          {{artist.name}}
+          <button (click)="addArtist(music.id, artist.id)">Add</button>
+        </li>
+      }
+    </ul>
+  }
+
+  <br>
+  <button (click)="edit()">Submit</button>
+  <button (click)="cancel()">Cancel</button>
+}

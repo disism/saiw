@@ -1,0 +1,103 @@
+@if (playlist$ | async; as playlist) {
+  @if (isEditor) {
+    Name: <input type="text" [(ngModel)]="name">
+  } @else {
+    <h2>{{playlist.name}}</h2>
+  }
+  <br>
+
+  @if (isEditor) {
+    <select [(ngModel)]="isPrivate">
+      <option value="">None</option>
+      <option value="false">Public</option>
+      <option value="true">Private</option>
+    </select>
+  } @else {
+    Private: <code>{{ playlist.private ? 'Private' : 'Public' }}</code>
+  }
+  <br>
+
+  @if (isEditor) {
+    Description: <input type="text" [(ngModel)]="description">
+  } @else {
+    <p>{{playlist.description}}</p>
+  }
+
+  <br>
+  @if (isEditorImage) {
+    @if (editImgUrl) {
+      <img
+        [ngSrc]="editImgUrl"
+        [width]="150"
+        [height]="150"
+        priority="true"
+        alt="">
+    }
+
+    <br>
+    Edit Image:
+
+    <br>
+    Remove: <button (click)="removeCurrentImage()">Remove current image</button>
+
+    <br>
+    Upload: <input type="file" (change)="editImage($event)">
+  } @else {
+    @if (playlist.image) {
+      <img
+        [ngSrc]="getImageAddress(playlist.image.file.hash)"
+        [width]="150"
+        [height]="150"
+        priority="true"
+        alt="">
+    }
+  }
+  <br>
+
+  @if (isEditor) {
+    <button (click)="editPlaylist()">Submit</button>
+    <button (click)="editCancel()">Cancel</button>
+  } @else if (isEditorImage) {
+    <button (click)="editPlaylistImage()">Submit</button>
+    <button (click)="editCancel()">Cancel</button>
+  } @else {
+    <button (click)="isEditor = true">Edit</button>
+    <button (click)="isEditorImage = true">EditImage</button>
+  }
+  <button (click)="deletePlaylist(playlist.id)">Delete</button>
+
+  <br>
+
+  @if (playlist.musics; as musics) {
+    <table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Artist</th>
+        <th>Options</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (music of musics; track music.id) {
+          <tr>
+            <td>
+              {{music.name}}
+            </td>
+            <td>
+              @if (music.artists) {
+                @for (artist of music.artists; track artist.id) {
+                  <span>{{artist.name}}, </span>
+                }
+              }
+            </td>
+            <td>
+              <app-music-player [hash]="music.file.hash"></app-music-player>
+              <button (click)="removeMusicFromPlaylist(music.id)">Remove</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+}

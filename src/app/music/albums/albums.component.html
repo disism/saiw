@@ -1,0 +1,24 @@
+<h2>
+  <a [routerLink]="['/music/albums/create']">Create Album</a>
+</h2>
+
+@if (albums$ | async; as albums) {
+  <ul>
+    @for (album of albums; track album.id ) {
+      <li>
+        <img
+          [ngSrc]="getImageAddress(album.image.file.hash, album.image.file.name)"
+          [width]="150"
+          [height]="150"
+          priority="true"
+          alt="">
+        <h3>
+          <a [routerLink]="['/music/album/', album.id]">{{album.title}}</a>
+        </h3>
+        <p>{{album.year}}</p>
+        <p>{{album.description}}</p>
+        <hr>
+      </li>
+    }
+  </ul>
+}

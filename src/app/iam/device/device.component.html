@@ -1,0 +1,8 @@
+@for (device of devices$ | async; track device.id) {
+  <p>Device ID: {{device.id}}</p>
+  <p>Time: [: {{device.create_time}}</p>
+  <p>IP: {{device.ip}}</p>
+  <p>Info: {{device.device}}</p>
+  <button (click)="delete(device)">Logout</button>
+  <hr>
+}

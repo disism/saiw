@@ -1,0 +1,16 @@
+<div>
+  Title: <input type="text" [(ngModel)]="title">
+  <br>
+  Description: <input type="text" [(ngModel)]="description">
+  <br>
+  Year: <input type="text" [(ngModel)]="year">
+  <br>
+</div>
+
+<div>
+  <app-image-upload (imageIdChanged)="onImageIdChanged($event)"></app-image-upload>
+</div>
+
+<app-artist-search (finalArtists)="handleFinalArtists($event)"></app-artist-search>
+
+<button (click)="createAlbum()">Submit</button>

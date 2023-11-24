@@ -1,0 +1,13 @@
+
+Name: <input type="text" [(ngModel)]="name" required>
+<br>
+  Description: <input type="text" [(ngModel)]="description">
+<br>
+Image: <input type="file" (change)="uploadImage($event)">
+<br>
+Private: <select [(ngModel)]="isPrivate">
+  <option value="false">False</option>
+  <option value="true">True</option>
+</select>
+<br>
+<button (click)="createPlaylist()" [disabled]="!name">Create</button>

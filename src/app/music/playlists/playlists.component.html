@@ -1,0 +1,24 @@
+<h2>
+  <a [routerLink]="['/music/playlists/create']">Create Playlist</a>
+</h2>
+
+@if (playlists$) {
+  <ul>
+    @for (playlist of playlists$ | async; track playlist.id) {
+      <li>
+        <a [routerLink]="['/music/playlist', playlist.id]">
+          <h3>{{playlist.name}}</h3>
+        </a>
+        <p>{{playlist.description}}</p>
+        @if (playlist.image) {
+          <img
+            [ngSrc]="getImageAddress(playlist.image.file.hash, playlist.image.file.name)"
+            [width]="150"
+            [height]="150"
+            priority="true"
+            alt="">
+        }
+      </li>
+    }
+  </ul>
+}

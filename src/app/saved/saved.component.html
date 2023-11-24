@@ -1,0 +1,67 @@
+
+<h2>
+  <a routerLink="/saves">Library</a>
+</h2>
+
+<div>
+  <input type="file" (change)="onFileSelected($event)" multiple>
+  @if (uploaded$ | async; as uploads) {
+    <h2>Add</h2>
+    @for (up of uploads; track up.hash) {
+      <p>{{ up.name }}</p>
+      <input type="text" [(ngModel)]="captions[up.hash]">
+    }
+    <br>
+    <button (click)="addSaves(uploads)">Add Saved</button>
+  }
+</div>
+
+<input type="text" [(ngModel)]="name" (keyup.enter)="mkDir()">
+<button (click)="mkDir()">MKDir</button>
+
+@if (dir$ | async; as dir) {
+  @if (dir.name !== 'root') {
+    <input type="text" [(ngModel)]="rename" (keyup.enter)="renameDir()">
+    <button (click)="renameDir()">RENAMEDir</button>
+  }
+
+  <h3>{{dir.name}}</h3>
+  <ul>
+    @for (sub of dir?.subdirs; track sub.id) {
+      <li>📁
+        <a [routerLink]="['/saved', sub.id]">{{ sub.name }}</a>
+        <button (click)="rmDir(sub.id)">RMDir</button>
+        <app-dir-selector [id]="dir.id" (dirSelected)="mvDir(sub.id, $event)"></app-dir-selector>
+      </li>
+    }
+  </ul>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Caption</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (saved of dir?.saves; track saved.id) {
+        <tr>
+          <td>{{ saved.name }}</td>
+          <td>{{ saved.file.size | size }}</td>
+          <td (dblclick)="editingId = saved.id">
+            {{ saved.caption }}
+            @if (editingId === saved.id) {
+              <input type="text" (blur)="editCaption(saved.id, caption.value)" #caption>
+            }
+          </td>
+          <td>
+            <button (click)="removeSavedInDir(saved.id)">Remove</button>
+            <app-download-button [hash]="saved.file.hash"></app-download-button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

@@ -1,0 +1,33 @@
+<ul>
+  @if (nodes$ | async; as providers) {
+  @for (provider of providers.oidc_provider_supported; track provider.configuration_endpoint) {
+  <li>
+    <button (click)="authorize(provider.configuration_endpoint, provider.name)">
+      {{ provider.name }}
+    </button>
+  </li>
+  }
+  }
+</ul>
+
+@if (!register) {
+  Username:
+  <input type="text" #username>
+  <br>
+  Password:
+  <input type="password" #password>
+  <br>
+  <button (click)="login(username.value, password.value)">Login</button>
+  <br>
+  I don't have an account? <button (click)="register = true">Create an account</button>
+} @else {
+  Username:
+  <input type="text" #username>
+  <br>
+  Password:
+  <input type="password" #password>
+  <br>
+  <button (click)="handleRegister(username.value, password.value)">Register</button>
+}
+
+<router-outlet></router-outlet>

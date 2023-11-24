@@ -1,0 +1,88 @@
+Add: <input type="file" (change)="onMusicSelected($event)" multiple>
+
+@if (exists!) {
+  <ul>
+    @for (exist of exists; track exist.name) {
+      <li>
+        <div>
+          <h3>{{exist.name}}</h3>
+          <ul>
+            @for (music of exist.music; track music.id) {
+              <li>
+                {{music.name}}
+                <button (click)="addToMyLibrary(music.id)">Add To Library</button>
+              </li>
+            }
+          </ul>
+        </div>
+      </li>
+    }
+  </ul>
+  <button (click)="completeUpload()">Complete Upload</button>
+}
+
+@if (selectedMusicIds.length !== 0) {
+  @if (playlists$ | async; as playlists) {
+    <select #items (change)="selectPlaylist(items.value)">
+      <option value=""></option>
+      @for (playlist of playlists; track playlist.id) {
+        <option [value]="playlist.id">{{playlist.name}}</option>
+      }
+    </select>
+  }
+  <button (click)="addToPlaylist()">Add To Playlist</button>
+
+  @if (albums$ | async; as albums) {
+    <select #items (change)="selectAlbum(items.value)">
+      <option value=""></option>
+      @for (album of albums; track album.id) {
+        <option [value]="album.id">{{album.title}}</option>
+      }
+    </select>
+  }
+  <button (click)="addToAlbum()">Add To Playlist</button>
+}
+
+@if (musics$ | async; as musics) {
+  <table>
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>Name</th>
+        <th>Artist</th>
+        <th>Description</th>
+        <th>Size</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (music of musics; track music.id) {
+        <tr>
+          <td>
+            <input type="checkbox" (change)="onCheckboxChange($event, music.id)" />
+          </td>
+          <td>
+            {{music.name}}
+          </td>
+          <td>
+            @if (music.artists) {
+              @for (artist of music.artists; track artist.id) {
+                <span>{{artist.name}}, </span>
+              }
+            }
+          </td>
+          <td>
+            {{music.description | slice:0:20}}
+          </td>
+          <td>
+            {{music.file.size | size }}
+          </td>
+          <td>
+            <button (click)="goEdit(music.id)">Edit</button>
+            <button (click)="deleteMusic(music.id)">Delete</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
